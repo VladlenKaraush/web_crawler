@@ -45,7 +45,7 @@ def f(url):
         pass
 
 
-with open("../hh-data/urls/smr-urls.txt") as file:
+with open("../hh-data/urls/spb-urls-2.txt") as file:
     smr_urls = file.read().split('\n')
 
 smr_urls_chunks = chunks(smr_urls, 100)
@@ -61,67 +61,10 @@ for chunk in smr_urls_chunks:
     pool.close() 
     pool.join()
     
-    with open("../hh-data/tables/smr/completed.csv", "a") as file:
+    with open("../hh-data/tables/spb/completed.csv", "a") as file:
         file.write('\n'.join(['; '.join(row) for row in completed_table]) + '\n' )
         
-    with open("../hh-data/tables/smr/no-adress.csv", "a") as file:
+    with open("../hh-data/tables/spb/no-adress.csv", "a") as file:
         file.write('\n'.join(['; '.join(row) for row in no_adress_table]) + '\n' * bool(len(no_adress_table)))
-        
-    with open("../hh-data/tables/smr/no-salary.csv", "a") as file:
-        file.write('\n'.join(['; '.join(row) for row in no_salary_table]) + '\n' * bool(len(no_salary_table)))
-
-
-with open("../hh-data/urls/kzn-urls.txt") as file:
-    kzn_urls = file.read().split('\n')
-
-kzn_urls_chunks = chunks(kzn_urls, 100)
-for chunk in kzn_urls_chunks:
-    completed_table = []
-    no_adress_table = []
-    no_salary_table = []
-    
-    pool = ThreadPool(8) 
-
-    results = pool.map(f, chunk)
-
-    pool.close() 
-    pool.join()
-    
-    with open("../hh-data/tables/kzn/completed.csv", "a") as file:
-        file.write('\n'.join(['; '.join(row) for row in completed_table]) + '\n' )
-        
-    with open("../hh-data/tables/kzn/no-adress.csv", "a") as file:
-        file.write('\n'.join(['; '.join(row) for row in no_adress_table]) + '\n' * bool(len(no_adress_table)))
-        
-    with open("../hh-data/tables/kzn/no-salary.csv", "a") as file:
-        file.write('\n'.join(['; '.join(row) for row in no_salary_table]) + '\n' * bool(len(no_salary_table)))
-
-
-with open("../hh-data/urls/vdk-urls.txt") as file:
-    vdk_urls = file.read().split('\n')
-
-vdk_urls_chunks = chunks(vdk_urls, 100)
-for chunk in vdk_urls_chunks:
-    completed_table = []
-    no_adress_table = []
-    no_salary_table = []
-    
-    pool = ThreadPool(8) 
-
-    results = pool.map(f, chunk)
-
-    pool.close() 
-    pool.join()
-    
-    with open("../hh-data/tables/vdk/completed.csv", "a") as file:
-        file.write('\n'.join(['; '.join(row) for row in completed_table]) + '\n' )
-        
-    with open("../hh-data/tables/vdk/no-adress.csv", "a") as file:
-        file.write('\n'.join(['; '.join(row) for row in no_adress_table]) + '\n' * bool(len(no_adress_table)))
-        
-    with open("../hh-data/tables/vdk/no-salary.csv", "a") as file:
-        file.write('\n'.join(['; '.join(row) for row in no_salary_table]) + '\n' * bool(len(no_salary_table)))
-
-    
 
 
