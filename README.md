@@ -6,8 +6,8 @@
 
 ## Необходимое программное обеспечение
 
-python3 - можно скачать тут: https://www.python.org/downloads/<br>
-anaconda3 - можно скачать тут: https://www.anaconda.com/distribution/
+python (3.7) - можно скачать тут: https://www.python.org/downloads/  <br>
+anaconda (python 3.7 version) - можно скачать тут: https://www.anaconda.com/distribution/
 
  ## Инструкция по использованию
  
