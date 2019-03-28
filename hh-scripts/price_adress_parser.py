@@ -140,3 +140,12 @@ for chunk in urls_chunks:
         file.write('\n'.join(['; '.join(row) for row in no_adress_table]))
 
 
+
+
+
+    df = pd.DataFrame([[r[0], 
+                        f'{cities_dir[city_abbr]}, ' * (cities_dir[city_abbr] not in r[1]) + r[1], 
+                        int((1 if r[2][1] == 'на руки' else 0.8) * sum([int(el) for el in r[2][0].split(' ')]) / len(r[2][0].split(' ')) / 1000)] for r in with_set_salary])
+    df = df.sort_values(by=[2, 1])
+    df.columns = ['url', 'adress', 'salary']
+    df = df[df.salary > 0][df.salary <= 300]
