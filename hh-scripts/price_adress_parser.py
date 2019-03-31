@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from bs4 import BeautifulSoup
 import urllib.request
 import requests
@@ -45,11 +46,11 @@ def f(url):
         pass
 
 
-with open("../hh-data/urls/spb-urls-2.txt") as file:
-    smr_urls = file.read().split('\n')
+with open("../hh-data/urls/spb-fulltime-urls.txt") as file:
+    urls = file.read().split('\n')
 
-smr_urls_chunks = chunks(smr_urls, 100)
-for chunk in smr_urls_chunks:
+urls_chunks = chunks(urls[33999:], 100)
+for chunk in urls_chunks:
     completed_table = []
     no_adress_table = []
     no_salary_table = []
@@ -61,10 +62,91 @@ for chunk in smr_urls_chunks:
     pool.close() 
     pool.join()
     
-    with open("../hh-data/tables/spb/completed.csv", "a") as file:
-        file.write('\n'.join(['; '.join(row) for row in completed_table]) + '\n' )
+    with open("../hh-data/tables/spb/fulltime/completed.csv", "a") as file:
+        file.write('\n'.join(['; '.join(row) for row in completed_table]))
         
-    with open("../hh-data/tables/spb/no-adress.csv", "a") as file:
-        file.write('\n'.join(['; '.join(row) for row in no_adress_table]) + '\n' * bool(len(no_adress_table)))
+    with open("../hh-data/tables/spb/fulltime/no-adress.csv", "a") as file:
+        file.write('\n'.join(['; '.join(row) for row in no_adress_table]))
 
 
+
+with open("../hh-data/urls/smr-fulltime-urls.txt") as file:
+    urls = file.read().split('\n')
+
+urls_chunks = chunks(urls, 100)
+for chunk in urls_chunks:
+    completed_table = []
+    no_adress_table = []
+    no_salary_table = []
+    
+    pool = ThreadPool(8) 
+
+    results = pool.map(f, chunk)
+
+    pool.close() 
+    pool.join()
+    
+    with open("../hh-data/tables/smr/fulltime/completed.csv", "a") as file:
+        file.write('\n'.join(['; '.join(row) for row in completed_table]))
+        
+    with open("../hh-data/tables/smr/fulltime/no-adress.csv", "a") as file:
+        file.write('\n'.join(['; '.join(row) for row in no_adress_table]))
+
+
+
+with open("../hh-data/urls/vdk-fulltime-urls.txt") as file:
+    urls = file.read().split('\n')
+
+urls_chunks = chunks(urls, 100)
+for chunk in urls_chunks:
+    completed_table = []
+    no_adress_table = []
+    no_salary_table = []
+    
+    pool = ThreadPool(8) 
+
+    results = pool.map(f, chunk)
+
+    pool.close() 
+    pool.join()
+    
+    with open("../hh-data/tables/vdk/fulltime/completed.csv", "a") as file:
+        file.write('\n'.join(['; '.join(row) for row in completed_table]))
+        
+    with open("../hh-data/tables/vdk/fulltime/no-adress.csv", "a") as file:
+        file.write('\n'.join(['; '.join(row) for row in no_adress_table]))
+
+
+
+with open("../hh-data/urls/kzn-fulltime-urls.txt") as file:
+    urls = file.read().split('\n')
+
+urls_chunks = chunks(urls, 100)
+for chunk in urls_chunks:
+    completed_table = []
+    no_adress_table = []
+    no_salary_table = []
+    
+    pool = ThreadPool(8) 
+
+    results = pool.map(f, chunk)
+
+    pool.close() 
+    pool.join()
+    
+    with open("../hh-data/tables/kzn/fulltime/completed.csv", "a") as file:
+        file.write('\n'.join(['; '.join(row) for row in completed_table]))
+        
+    with open("../hh-data/tables/kzn/fulltime/no-adress.csv", "a") as file:
+        file.write('\n'.join(['; '.join(row) for row in no_adress_table]))
+
+
+
+
+
+    df = pd.DataFrame([[r[0], 
+                        f'{cities_dir[city_abbr]}, ' * (cities_dir[city_abbr] not in r[1]) + r[1], 
+                        int((1 if r[2][1] == 'на руки' else 0.8) * sum([int(el) for el in r[2][0].split(' ')]) / len(r[2][0].split(' ')) / 1000)] for r in with_set_salary])
+    df = df.sort_values(by=[2, 1])
+    df.columns = ['url', 'adress', 'salary']
+    df = df[df.salary > 0][df.salary <= 300]
